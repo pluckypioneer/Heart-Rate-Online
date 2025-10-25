@@ -1,0 +1,53 @@
+# Webcam Pulse Detector - Docker Compose Configuration
+#
+# Note: Docker containers cannot access Windows cameras directly.
+# This configuration is for web UI testing only.
+# For full camera functionality on Windows, use local development mode (see README.md)
+
+services:
+  # Backend API service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pulse-detector-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - CAMERA_DEVICES=[0,1]
+      - BPM_MIN=${BPM_MIN:-50}
+      - BPM_MAX=${BPM_MAX:-180}
+      - HOST=0.0.0.0
+      - PORT=8000
+    volumes:
+      - ./data:/app/data
+    networks:
+      - pulse-network
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:${BACKEND_PORT:-8000}
+        - VITE_WS_URL=ws://localhost:${BACKEND_PORT:-8000}
+    container_name: pulse-detector-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+    networks:
+      - pulse-network
+
+networks:
+  pulse-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

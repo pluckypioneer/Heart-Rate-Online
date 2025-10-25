@@ -1,0 +1,26 @@
+@import '../styles/variables.scss';
+
+.control-panel-card {
+  box-shadow: $box-shadow;
+
+  .ant-card-head {
+    background: #f0f2f5;
+  }
+
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.control-section {
+  .control-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: rgba(0, 0, 0, 0.85);
+
+    .anticon {
+      margin-right: 8px;
+    }
+  }
+}

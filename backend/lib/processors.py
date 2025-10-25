@@ -1,7 +1,10 @@
 import numpy as np
 import time
 import cv2
-import pylab
+try:
+    import pylab
+except ImportError:
+    pylab = None
 import os
 import sys
 from typing import List, Tuple, Optional, Union, Any
@@ -24,13 +27,12 @@ class findFaceGetPulse:
                  face_detector_smoothness: float = 10):
         if bpm_limits is None:
             bpm_limits = []
-        
-        # Store bpm limits with sensible defaults
+        # BPM limits with defaults
         self.bpm_limits = bpm_limits if len(bpm_limits) == 2 else [50, 180]
-        # Store spike limit and detector smoothness
+        # Spike limit and detector smoothness
         self.data_spike_limit = float(data_spike_limit)
         self.face_detector_smoothness = float(face_detector_smoothness)
-        
+
         self.frame_in = np.zeros((10, 10))
         self.frame_out = np.zeros((10, 10))
         self.fps = 0
@@ -60,10 +62,8 @@ class findFaceGetPulse:
 
         self.idx = 1
         self.find_faces = True
-        # Face detection status
         self.face_present = False
         self.last_face_ts = 0.0
-        # BPM smoothing
         self.bpm_ema = None
 
     def find_faces_toggle(self) -> bool:
@@ -130,6 +130,8 @@ class findFaceGetPulse:
         return self.trained
 
     def plot(self) -> None:
+        if pylab is None:
+            return
         data = np.array(self.data_buffer).T
         np.savetxt("data.dat", data)
         np.savetxt("times.dat", self.times)
@@ -198,27 +200,46 @@ class findFaceGetPulse:
 
             if len(detected) > 0:
                 detected.sort(key=lambda a: a[-1] * a[-2])
-                # Mark face present and smooth the rectangle
+                # update presence and timestamp
                 self.face_present = True
                 self.last_face_ts = time.time()
-                # Smooth blending factor based on face_detector_smoothness
+                # Smooth rectangle
                 blend = 1.0 / max(1.0, self.face_detector_smoothness)
                 prev = np.array(self.face_rect, dtype=float)
                 curr = np.array(detected[-1], dtype=float)
                 blended = (1.0 - blend) * prev + blend * curr
                 self.face_rect = [int(v) for v in blended]
-
                 if self.shift(detected[-1]) > 10:
                     self.face_rect = detected[-1]
             else:
-                # No face detected in this frame
                 self.face_present = False
             forehead1 = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
-            self.draw_rect(self.face_rect, col=(255, 0, 0)) # Keep face rect blue
+            self.draw_rect(self.face_rect, col=(255, 0, 0))
             x, y, w, h = self.face_rect
-            self.draw_rect(forehead1) # Keep forehead rect green (default)
+            self.draw_rect(forehead1)
             x, y, w, h = forehead1
             return
+        
+        # Check if face is still present in locked mode
+        if not self.find_faces:
+            # Perform face detection even in locked mode to check if face is still present
+            detected = list(self.face_cascade.detectMultiScale(self.gray,
+                                                               scaleFactor=1.3,
+                                                               minNeighbors=4,
+                                                               minSize=(50, 50),
+                                                               flags=cv2.CASCADE_SCALE_IMAGE))
+            
+            if len(detected) > 0:
+                self.face_present = True
+                self.last_face_ts = time.time()
+            else:
+                self.face_present = False
+                # Reset BPM and data if face is lost
+                self.bpm = 0.0
+                self.bpm_ema = None
+                self.data_buffer = []
+                self.times = []
+                return
         if set(self.face_rect) == set([1, 1, 2, 2]):
             return
 
@@ -238,7 +259,7 @@ class findFaceGetPulse:
         self.draw_rect(forehead1)
 
         vals = self.get_subface_means(forehead1)
-        # Clamp spikes based on configured limit
+        # Spike clamp
         if len(self.data_buffer) > 0 and abs(vals - float(self.data_buffer[-1])) > self.data_spike_limit:
             vals = float(self.data_buffer[-1])
 
@@ -265,7 +286,6 @@ class findFaceGetPulse:
             self.freqs = float(self.fps) / L * np.arange(L // 2 + 1)
 
             freqs = 60. * self.freqs
-            # Use configured BPM limits instead of hardcoded values
             lo, hi = self.bpm_limits
             idx = np.where((freqs > lo) & (freqs < hi))
 
@@ -276,26 +296,19 @@ class findFaceGetPulse:
             self.freqs = pfreq
             self.fft = pruned
 
-            # Check if pruned array is empty before finding argmax
             if pruned.size > 0:
                 idx2 = np.argmax(pruned)
                 new_bpm = float(self.freqs[idx2])
-                # EMA smoothing of BPM
                 if self.bpm_ema is None:
                     self.bpm_ema = new_bpm
                 else:
-                    # alpha determines responsiveness; 0.7 new, 0.3 history
                     self.bpm_ema = 0.7 * new_bpm + 0.3 * float(self.bpm_ema)
                 self.bpm = float(self.bpm_ema)
-                
-                # Calculate phase-related blending only if we have a valid peak
                 t = (np.sin(phase[idx2]) + 1.) / 2.
                 t = 0.9 * t + 0.1
             else:
-                # Handle case where no peak is found in the range (e.g., keep previous bpm or set to 0)
-                # self.bpm = 0 # Option: Reset bpm if no peak found
-                t = 0.5 # Default blending if no peak found
-                
+                t = 0.5
+
             alpha = t
             beta = 1 - t
 
@@ -307,19 +320,14 @@ class findFaceGetPulse:
                 self.frame_in[y:y + h, x:x + w, 1] + \
                 beta * self.gray[y:y + h, x:x + w]
             b = alpha * self.frame_in[y:y + h, x:x + w, 2]
-            self.frame_out[y:y + h, x:x + w] = cv2.merge([r,
-                                                          g,
-                                                          b])
+            self.frame_out[y:y + h, x:x + w] = cv2.merge([r, g, b])
             x1, y1, w1, h1 = self.face_rect
             self.slices = [np.copy(self.frame_out[y1:y1 + h1, x1:x1 + w1, 1])]
             col = (100, 255, 100)
             gap = (self.buffer_size - L) / self.fps if self.fps > 0 else 0.0
-            # self.bpms.append(bpm)
-            # self.ttimes.append(time.time())
             if gap:
                 text = f"(estimate: {self.bpm:.1f} bpm, wait {gap:.0f} s)"
             else:
-                text = f"{self.bpm:.1f} BPM" # Changed text slightly
-            # Draw BPM estimate with outline
+                text = f"{self.bpm:.1f} BPM"
             draw_text_with_outline(self.frame_out, text,
                        (int(x - w / 2), int(y)), font, font_scale_status, text_color, outline_color, text_thickness, outline_thickness)

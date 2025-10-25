@@ -1,0 +1,80 @@
+@import '../styles/variables.scss';
+
+.bpm-display-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: $box-shadow;
+
+  .ant-card-body {
+    padding: 32px;
+  }
+}
+
+.bpm-main {
+  text-align: center;
+
+  .bpm-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+
+  .ant-statistic-title {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .ant-statistic-content {
+    color: white;
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.signal-quality {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+
+  .quality-header {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+  }
+
+  .ant-progress {
+    margin-bottom: 16px;
+
+    .ant-progress-text {
+      color: white;
+    }
+  }
+
+  .status-info {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+
+    .status-active {
+      color: $success-color;
+      font-weight: 500;
+    }
+
+    .status-inactive {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}

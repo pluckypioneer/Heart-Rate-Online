@@ -1,0 +1,85 @@
+@import '../styles/variables.scss';
+
+.video-stream-card {
+  .ant-card-head {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+
+    .ant-card-head-title {
+      color: white;
+      font-weight: 600;
+    }
+  }
+
+  .status-indicator {
+    font-size: 14px;
+    font-weight: 500;
+
+    &.connected {
+      color: $success-color;
+    }
+
+    &.disconnected {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+.video-container {
+  position: relative;
+  min-height: 400px;
+  background: #000;
+  border-radius: $border-radius;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-placeholder {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+}
+
+.video-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.video-canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-info {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.face-status {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+
+  &.detected {
+    background: rgba(82, 196, 26, 0.9);
+    color: white;
+  }
+
+  &.not-detected {
+    background: rgba(255, 77, 79, 0.9);
+    color: white;
+  }
+}

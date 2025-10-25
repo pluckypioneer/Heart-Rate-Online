@@ -1,0 +1,120 @@
+@import '../styles/variables.scss';
+
+.data-chart-card {
+  box-shadow: $box-shadow;
+
+  .ant-card-head {
+    background: #f0f2f5;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.stats-container {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+
+  .quality-progress {
+    margin-top: 16px;
+
+    .progress-label {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .ant-progress {
+      .ant-progress-text {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-wrapper {
+  background: white;
+  border-radius: $border-radius;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid $border-color;
+}
+
+.data-summary {
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+
+  .summary-title {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
+    margin-bottom: 12px;
+    font-size: 16px;
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: 4px;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+
+    .label {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 14px;
+    }
+
+    .value {
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.85);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+  }
+}
+
+// 响应式调整
+@media (max-width: 768px) {
+  .data-chart-card {
+    .ant-card-body {
+      padding: 16px;
+    }
+  }
+
+  .stats-container {
+    padding: 12px;
+
+    .quality-progress {
+      margin-top: 12px;
+    }
+  }
+
+  .data-summary {
+    padding: 12px;
+
+    .summary-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+
+      .value {
+        font-size: 14px;
+      }
+    }
+  }
+}

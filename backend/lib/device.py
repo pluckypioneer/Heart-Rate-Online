@@ -55,22 +55,11 @@ class Camera:
         self.cam = cv2.VideoCapture(camera)
         self.valid = False
         try:
-            # Validate device open status first
-            if not self.cam.isOpened():
-                self.shape = None
-                self.valid = False
-                return
-            # Probe a frame
-            ret, frame = self.cam.read()
-            if not ret or frame is None:
-                self.shape = None
-                self.valid = False
-                return
-            self.shape = frame.shape
+            resp = self.cam.read()
+            self.shape = resp[1].shape
             self.valid = True
         except Exception as e:  # Specify exception type when possible
             self.shape = None
-            self.valid = False
 
     def get_frame(self) -> np.ndarray:
         """
@@ -80,27 +69,16 @@ class Camera:
             np.ndarray: The captured frame or an error message frame if camera is not accessible
         """
         if self.valid:
-            ret, frame = self.cam.read()
-            if not ret or frame is None:
-                # Return a warning frame to indicate read failure
-                frame = np.ones((480, 640, 3), dtype=np.uint8)
-                col = (0, 255, 255)
-                cv2.putText(frame, "(Error: Frame read failed)",
-                           (65, 220), cv2.FONT_HERSHEY_PLAIN, 2, col)
-            return frame
+            _, frame = self.cam.read()
         else:
             frame = np.ones((480, 640, 3), dtype=np.uint8)
             col = (0, 255, 255)  # Fixed value from 256 to 255 (valid RGB range is 0-255)
             cv2.putText(frame, "(Error: Camera not accessible)",
                        (65, 220), cv2.FONT_HERSHEY_PLAIN, 2, col)
-            return frame
+        return frame
 
     def release(self) -> None:
         """
         Release the camera resources.
         """
-        try:
-            if hasattr(self, 'cam') and self.cam is not None:
-                self.cam.release()
-        except Exception:
-            pass
+        self.cam.release()
