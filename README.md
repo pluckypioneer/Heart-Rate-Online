@@ -1,11 +1,11 @@
-# Webcam Pulse Detector - Web Version
+# Heart Rate Online(Webcam Pulse Detector - Web Version)
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)
 
 实时心率检测 Web 应用，通过普通网络摄像头检测心率（50-180 BPM）。
 
-![Alt text](http://i.imgur.com/2ngZopS.jpg "Screenshot")
+本项目基于[webcam-pulse-detector](https://github.com/thearn/webcam-pulse-detector), 搭建了前端的页面，并优化了后端的一些小bug。
 
 ## ✨ 功能特性
 
@@ -16,6 +16,60 @@
 - 💾 **数据导出** - 导出 CSV 格式数据
 - 🔌 **RESTful API** - 完整的 API 接口
 - 📈 **实时图表** - ECharts 数据可视化
+
+---
+
+## 🚀 快速开始
+
+### 📋 环境要求
+
+#### 方式一（本地开发）
+- Windows 10/11
+- Python 3.8+
+- Node.js 18+
+- npm 或 yarn
+- 摄像头
+
+#### 方式二（Docker）
+- Windows 10/11
+- Docker Desktop
+- WSL 2（推荐）
+
+### 首次使用建议
+
+1. **安装 Python 和 Node.js**
+   - Python: https://www.python.org/downloads/
+   - Node.js: https://nodejs.org/
+
+2. **克隆项目**
+   ```bash
+   git clone <repository-url>
+   cd webcam-pulse-detector
+   ```
+
+3. **选择使用方式**
+   1. 想要完整功能 → 使用方式一（本地开发）
+   - 步骤1：启动后端服务
+
+   ```
+   cd backend
+   py -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+   - 步骤2：启动前端服务（新终端）
+
+   ```
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+ 2. 仅想测试 UI → 使用方式二（Docker）
+
+---
 
 ## 🎯 两种使用方式
 
@@ -30,7 +84,7 @@
 cd backend
 
 # 2. 创建虚拟环境（首次）
-python -m venv venv
+py -m venv venv
 
 # 3. 激活虚拟环境
 venv\Scripts\activate
@@ -102,59 +156,6 @@ docker-compose down
 
 ---
 
-## 📋 环境要求
-
-### 方式一（本地开发）
-- Windows 10/11
-- Python 3.8+
-- Node.js 18+
-- npm 或 yarn
-- 摄像头
-
-### 方式二（Docker）
-- Windows 10/11
-- Docker Desktop
-- WSL 2（推荐）
-
----
-
-## 🚀 快速开始
-
-### 首次使用建议
-
-1. **安装 Python 和 Node.js**
-   - Python: https://www.python.org/downloads/
-   - Node.js: https://nodejs.org/
-
-2. **克隆项目**
-   ```bash
-   git clone <repository-url>
-   cd webcam-pulse-detector
-   ```
-
-3. **选择使用方式**
-   - 想要完整功能 → 使用方式一（本地开发）
-      - 步骤1：启动后端服务
-
-```
-cd backend
-py -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-      - 步骤2：启动前端服务（新终端）
-
-```
-cd frontend
-npm install
-npm run dev
-```
-
-   - 仅想测试 UI → 使用方式二（Docker）
-
----
 
 ## 📖 使用说明
 
@@ -217,69 +218,6 @@ webcam-pulse-detector/
 ├── stop.bat            # 停止脚本
 └── README.md           # 本文件
 ```
-
----
-
-## 🔧 常见问题
-
-### Q1: 后端启动失败？
-
-```bash
-# 确保 Python 版本正确
-python --version  # 应为 3.8+
-
-# 升级 pip
-python -m pip install --upgrade pip
-
-# 重新安装依赖
-pip install -r requirements.txt --no-cache-dir
-```
-
-### Q2: 前端启动失败？
-
-```bash
-# 清理缓存
-npm cache clean --force
-
-# 删除 node_modules 重新安装
-rmdir /s /q node_modules
-npm install
-```
-
-- 若构建时报 `Property 'env' does not exist on type 'ImportMeta'`，请在 `src` 目录创建 `vite-env.d.ts`，内容：`/// <reference types="vite/client" />`。
-- 前端可通过环境变量配置后端地址：
-  - `VITE_API_URL`（默认：`http://localhost:8000`）
-  - `VITE_WS_URL`（默认：`ws://localhost:8000`）
-
-### Q3: 端口被占用？
-
-```bash
-# 查找占用进程
-netstat -ano | findstr :8000
-netstat -ano | findstr :3000
-
-# 结束进程
-taskkill /PID <进程ID> /F
-```
-
-### Q4: 摄像头无法打开？
-
-1. 关闭其他使用摄像头的程序（Teams, Zoom 等）
-2. 检查 Windows 隐私设置中的摄像头权限
-3. 尝试不同的摄像头 ID（0, 1, 2）
-
-### Q5: Docker 启动失败？
-
-1. 确保 Docker Desktop 正在运行
-2. 重启 Docker Desktop
-3. 检查是否启用了 WSL 2
-
-### Q6: 页面空白或 `net::ERR_ABORTED`？
-
-- 请确认访问的是前端端口 `http://localhost:3000/`（开发）或统一端口 `http://127.0.0.1:8000/ui/`（生产/演示）。
-- 如果你在后端端口访问前端开发资源，会看到 `/@vite/client` 404，这是预期行为（该资源仅存在于前端 dev 服务器）。
-- 在浏览器 Network 面板确认 `index.html`、`/@vite/client`、`/src/main.tsx` 都返回 200（仅 dev 模式需要 `@vite/client`）。
-- 如仍异常，重启前端 dev（在终端按 `r` 回车或重新 `npm run dev`），并尝试禁用浏览器插件（广告/隐私拦截等）。
 
 ---
 
@@ -397,6 +335,68 @@ python get_pulse.py
 - `C` - 切换摄像头
 - `F` - 导出数据为 CSV
 - `Esc` - 退出
+
+---
+## 🔧 常见问题
+
+### Q1: 后端启动失败？
+
+```bash
+# 确保 Python 版本正确
+python --version  # 应为 3.8+
+
+# 升级 pip
+python -m pip install --upgrade pip
+
+# 重新安装依赖
+pip install -r requirements.txt --no-cache-dir
+```
+
+### Q2: 前端启动失败？
+
+```bash
+# 清理缓存
+npm cache clean --force
+
+# 删除 node_modules 重新安装
+rmdir /s /q node_modules
+npm install
+```
+
+- 若构建时报 `Property 'env' does not exist on type 'ImportMeta'`，请在 `src` 目录创建 `vite-env.d.ts`，内容：`/// <reference types="vite/client" />`。
+- 前端可通过环境变量配置后端地址：
+  - `VITE_API_URL`（默认：`http://localhost:8000`）
+  - `VITE_WS_URL`（默认：`ws://localhost:8000`）
+
+### Q3: 端口被占用？
+
+```bash
+# 查找占用进程
+netstat -ano | findstr :8000
+netstat -ano | findstr :3000
+
+# 结束进程
+taskkill /PID <进程ID> /F
+```
+
+### Q4: 摄像头无法打开？
+
+1. 关闭其他使用摄像头的程序（Teams, Zoom 等）
+2. 检查 Windows 隐私设置中的摄像头权限
+3. 尝试不同的摄像头 ID（0, 1, 2）
+
+### Q5: Docker 启动失败？
+
+1. 确保 Docker Desktop 正在运行
+2. 重启 Docker Desktop
+3. 检查是否启用了 WSL 2
+
+### Q6: 页面空白或 `net::ERR_ABORTED`？
+
+- 请确认访问的是前端端口 `http://localhost:3000/`（开发）或统一端口 `http://127.0.0.1:8000/ui/`（生产/演示）。
+- 如果你在后端端口访问前端开发资源，会看到 `/@vite/client` 404，这是预期行为（该资源仅存在于前端 dev 服务器）。
+- 在浏览器 Network 面板确认 `index.html`、`/@vite/client`、`/src/main.tsx` 都返回 200（仅 dev 模式需要 `@vite/client`）。
+- 如仍异常，重启前端 dev（在终端按 `r` 回车或重新 `npm run dev`），并尝试禁用浏览器插件（广告/隐私拦截等）。
 
 ---
 
