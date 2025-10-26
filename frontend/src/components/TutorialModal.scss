@@ -1,0 +1,112 @@
+.tutorial-modal {
+  .ant-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-bottom: none;
+    
+    .ant-modal-title {
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+  
+  .ant-modal-body {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  .tutorial-content {
+    .ant-typography {
+      margin-bottom: 16px;
+    }
+    
+    .ant-steps-vertical {
+      .ant-steps-item {
+        margin-bottom: 16px;
+        
+        .ant-steps-item-icon {
+          background: #f0f2f5;
+          border-color: #d9d9d9;
+          
+          .ant-steps-icon {
+            color: #1890ff;
+          }
+        }
+        
+        .ant-steps-item-content {
+          .ant-steps-item-title {
+            font-weight: 600;
+            color: #262626;
+          }
+          
+          .ant-steps-item-description {
+            color: #595959;
+            
+            .ant-space-item {
+              line-height: 1.6;
+            }
+          }
+        }
+      }
+    }
+    
+    .ant-divider {
+      margin: 20px 0;
+    }
+    
+    .tips-section {
+      background: #f9f9f9;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #1890ff;
+      
+      .ant-typography {
+        margin-bottom: 12px;
+      }
+      
+      .ant-space {
+        .ant-typography {
+          margin-bottom: 4px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  .ant-modal-footer {
+    border-top: none;
+    padding: 16px 24px;
+    text-align: center;
+    
+    .ant-btn {
+      min-width: 120px;
+      height: 40px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .tutorial-modal {
+    width: 90vw !important;
+    max-width: none;
+    margin: 20px;
+    
+    .ant-modal-body {
+      padding: 16px;
+      max-height: 70vh;
+    }
+    
+    .tutorial-content {
+      .ant-steps-vertical {
+        .ant-steps-item {
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+}
