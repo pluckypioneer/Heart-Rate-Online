@@ -1,5 +1,8 @@
-opencv-python>=4.5.0
-numpy>=1.19.0
-matplotlib>=3.3.0
-gradio>=3.0.0
-pytest
+# This file is for development convenience only
+# For production, use backend/requirements.txt
+
+opencv-python>=4.9.0
+numpy>=1.26.0
+matplotlib>=3.7.0
+fastapi==0.104.1
+uvicorn==0.24.0

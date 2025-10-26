@@ -78,3 +78,28 @@ htmlcov/
 
 # Docker
 docker-compose.override.yml
+
+# Frontend build outputs
+frontend/dist/
+frontend/build/
+
+# Python virtual environments
+venv*
+.venv*
+env*
+.env*
+
+# Development
+*.tgz
+*.tar.gz
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE specific
+*.sublime-*
+
+# macOS
+.AppleDouble
+.LSOverride
