@@ -180,7 +180,7 @@ const DataChart = () => {
               <Col xs={12} sm={6}>
                 <Statistic
                   title="主频心率"
-                  value={stats.dominantBpm.toFixed(1)}
+                  value={stats.dominantBpm?.toFixed(1) || '0.0'}
                   suffix="BPM"
                   valueStyle={{ color: '#52c41a' }}
                 />
@@ -218,13 +218,13 @@ const DataChart = () => {
               <Col xs={12} md={8}>
                 <div className="summary-item">
                   <span className="label">峰值功率:</span>
-                  <span className="value">{stats.maxPower.toFixed(2)}</span>
+                  <span className="value">{stats.maxPower?.toFixed(2) || '0.00'}</span>
                 </div>
               </Col>
               <Col xs={12} md={8}>
                 <div className="summary-item">
                   <span className="label">主频率:</span>
-                  <span className="value">{stats.dominantFreq.toFixed(2)} Hz</span>
+                  <span className="value">{stats.dominantFreq?.toFixed(2) || '0.00'} Hz</span>
                 </div>
               </Col>
               <Col xs={12} md={8}>
