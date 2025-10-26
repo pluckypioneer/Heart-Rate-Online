@@ -88,11 +88,7 @@ class ApiService {
     return response as unknown as Blob;
   }
 
-  async getHistory(limit: number = 10): Promise<{ sessions: SessionData[] }> {
-    return this.client.get('/data/history', {
-      params: { limit },
-    });
-  }
+
 
   async getCurrentData(sessionId: string): Promise<CurrentData> {
     return this.client.get('/data/current', {

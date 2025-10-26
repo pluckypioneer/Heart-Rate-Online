@@ -203,7 +203,7 @@ const ControlPanel = () => {
             disabled={!isStreaming}
             block
           >
-            切换人脸搜索
+            固定人脸位置
           </Button>
 
           <Button

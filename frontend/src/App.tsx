@@ -1,10 +1,9 @@
 import { Layout, Row, Col } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { HeartOutlined } from '@ant-design/icons';
 import VideoStream from './components/VideoStream';
 import BPMDisplay from './components/BPMDisplay';
 import DataChart from './components/DataChart';
 import ControlPanel from './components/ControlPanel';
-import HistoryTable from './components/HistoryTable';
 import './styles/global.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -14,7 +13,7 @@ function App() {
     <Layout className="app-container">
       <Header className="app-header">
         <h1>摄像头心率检测器</h1>
-        <SettingOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
+        <HeartOutlined style={{ fontSize: '20px', cursor: 'pointer', color: '#ff4d4f' }} />
       </Header>
 
       <Content className="app-content">
@@ -37,18 +36,13 @@ function App() {
                   <DataChart />
                 </div>
               </Col>
-              
-              {/* Historical data section */}
-              <Col xs={24}>
-                <HistoryTable />
-              </Col>
             </Row>
           </Col>
         </Row>
       </Content>
 
       <Footer className="app-footer">
-        摄像头心率检测器 © 2025 | 通过摄像头实时检测心率
+        摄像头心率检测器 © 2025 
       </Footer>
     </Layout>
   );
