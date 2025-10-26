@@ -57,6 +57,13 @@ class DetectionSession:
             self.camera.release()
         logger.info(f"Session {self.session_id} stopped")
 
+    def add_data_point(self, timestamp: float, value: float, bpm: Optional[float] = None):
+        """Add a data point to the session"""
+        self.timestamps.append(timestamp)
+        self.raw_values.append(value)
+        if bpm is not None:
+            self.bpm_values.append(bpm)
+
     def get_data(self) -> Optional[CurrentDataResponse]:
         """Get current session data"""
         if not self.active or not self.processor:
@@ -200,3 +207,7 @@ class PulseDetectorManager:
     def get_history(self, limit: int = 10) -> List[SessionData]:
         """Get session history"""
         return self.history[-limit:]
+
+
+# Create global detector manager instance
+detector_manager = PulseDetectorManager()

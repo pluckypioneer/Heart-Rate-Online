@@ -125,30 +125,7 @@ async def switch_camera(request: SwitchCameraRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/data/export")
-async def export_data(
-    session_id: str = Query(..., description="Session ID"),
-    format: str = Query("csv", description="Export format")
-):
-    """Export session data"""
-    try:
-        if format.lower() != "csv":
-            raise HTTPException(status_code=400, detail="Only CSV format is supported")
 
-        file_path = detector_manager.export_data(session_id, format)
-        if not os.path.exists(file_path):
-            raise HTTPException(status_code=404, detail="Data file not found")
-
-        return FileResponse(
-            path=file_path,
-            media_type="text/csv",
-            filename=os.path.basename(file_path)
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error exporting data: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/data/history", response_model=HistoryResponse)

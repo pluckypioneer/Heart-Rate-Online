@@ -13,7 +13,6 @@
 - 🌐 **Web 界面** - 现代化的 React 前端
 - 📊 **数据可视化** - FFT 频谱图和时域信号图
 - 📷 **多摄像头支持** - 可切换不同摄像头
-- 💾 **数据导出** - 导出 CSV 格式数据
 - 🔌 **RESTful API** - 完整的 API 接口
 - 📈 **实时图表** - ECharts 数据可视化
 
@@ -170,14 +169,14 @@ docker-compose down
 4. 将脸部置于画面中心
 5. 等待 15-20 秒让系统稳定采集数据
 6. 查看实时心率和数据图表
-7. 点击 **"Export Data (CSV)"** 导出数据
+7. 查看实时心率和数据图表
 
 ### 控制功能
 
 - **开始/停止检测** - 控制检测过程
 - **切换摄像头** - 在多个摄像头间切换
 - **Toggle Face Search** - 切换人脸搜索模式
-- **导出数据** - 保存采集的数据为 CSV
+
 
 ---
 
@@ -241,8 +240,7 @@ POST http://localhost:8000/api/v1/pulse/start
 # 停止检测
 POST http://localhost:8000/api/v1/pulse/stop
 
-# 导出数据
-GET http://localhost:8000/api/v1/data/export
+
 ```
 
 ### WebSocket
@@ -331,7 +329,7 @@ python get_pulse.py
 - `S` - 锁定/解锁人脸检测
 - `D` - 显示/隐藏数据图表
 - `C` - 切换摄像头
-- `F` - 导出数据为 CSV
+
 - `Esc` - 退出
 
 ---

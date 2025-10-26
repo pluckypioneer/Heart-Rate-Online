@@ -5,7 +5,7 @@ import './VideoStream.scss';
 
 const VideoStream = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { frameData, isStreaming, isConnected, error } = usePulseStore();
+  const { frameData, isStreaming, error } = usePulseStore();
 
   useEffect(() => {
     // Draw frame on canvas
@@ -28,11 +28,6 @@ const VideoStream = () => {
     <Card
       title="实时视频流"
       className="video-stream-card"
-      extra={
-        <span className={`status-indicator ${isConnected ? 'connected' : 'disconnected'}`}>
-          {isConnected ? '● 已连接' : '○ 未连接'}
-        </span>
-      }
     >
       <div className="video-container">
         {error && (

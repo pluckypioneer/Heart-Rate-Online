@@ -6,12 +6,11 @@ import {
   CameraOutlined,
   SearchOutlined,
   BarChartOutlined,
-  DownloadOutlined,
 } from '@ant-design/icons';
 import { usePulseStore } from '@/stores/pulseStore';
 import wsService from '@/services/websocket';
 import apiService from '@/services/api';
-import { downloadBlob } from '@/utils/helpers';
+
 import type { CameraInfo } from '@/types';
 import './ControlPanel.scss';
 
@@ -113,22 +112,7 @@ const ControlPanel = () => {
     }
   };
 
-  const handleExportData = async () => {
-    if (!sessionId) {
-      message.warning('没有活跃会话可导出');
-      return;
-    }
 
-    try {
-      const blob = await apiService.exportData(sessionId);
-      const filename = `pulse-data-${Date.now()}.csv`;
-      downloadBlob(blob, filename);
-      message.success('数据导出成功');
-    } catch (error) {
-      message.error('导出数据失败');
-      console.error(error);
-    }
-  };
 
   return (
     <Card title="控制面板" className="control-panel-card">
@@ -142,8 +126,27 @@ const ControlPanel = () => {
           onClick={handleStartStop}
           loading={loading}
           danger={isStreaming}
+          style={{ height: '48px', fontSize: '16px', fontWeight: 'bold' }}
         >
           {isStreaming ? '停止检测' : '开始检测'}
+        </Button>
+
+        {/* Face Search Button - Moved below Start/Stop */}
+        <Button
+          type="default"
+          size="large"
+          block
+          icon={<SearchOutlined />}
+          onClick={handleToggleSearch}
+          disabled={!isStreaming}
+          style={{ 
+            height: '42px', 
+            fontSize: '14px',
+            border: '1px solid #d9d9d9',
+            backgroundColor: !isStreaming ? '#f5f5f5' : '#ffffff'
+          }}
+        >
+          固定人脸位置
         </Button>
 
         <Divider />
@@ -195,26 +198,7 @@ const ControlPanel = () => {
 
         <Divider />
 
-        {/* Action Buttons */}
-        <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-          <Button
-            icon={<SearchOutlined />}
-            onClick={handleToggleSearch}
-            disabled={!isStreaming}
-            block
-          >
-            固定人脸位置
-          </Button>
 
-          <Button
-            icon={<DownloadOutlined />}
-            onClick={handleExportData}
-            disabled={!sessionId}
-            block
-          >
-            导出数据 (CSV)
-          </Button>
-        </Space>
       </Space>
     </Card>
   );

@@ -17,6 +17,7 @@ from device import Camera
 from processors import findFaceGetPulse
 
 from app.config import settings
+from app.core.pulse_detector import detector_manager
 
 logger = logging.getLogger(__name__)
 
@@ -118,6 +119,15 @@ class VideoStreamManager:
             if hasattr(self.processor, 'samples') and len(self.processor.samples) > 0:
                 # Last 100 samples
                 raw_signal = [float(s) for s in self.processor.samples[-100:]]
+                
+                # Add data point to current detection session if available
+                if detector_manager.current_session_id:
+                    session_id = detector_manager.current_session_id
+                    if session_id in detector_manager.sessions:
+                        session = detector_manager.sessions[session_id]
+                        # Use the latest sample value
+                        latest_value = float(self.processor.samples[-1]) if self.processor.samples else 0.0
+                        session.add_data_point(time.time(), latest_value, current_bpm)
 
             # Calculate signal quality
             signal_quality = 0.0
