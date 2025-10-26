@@ -448,6 +448,3 @@ Apache License 2.0 - 详见 [LICENSE.txt](LICENSE.txt)
 - **API 文档**: http://localhost:8000/api/docs
 - **项目文档**: [docs/](docs/)
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=pluckypioneer/Heart-Rate-Online&type=date&legend=top-left)](https://www.star-history.com/#pluckypioneer/Heart-Rate-Online&type=date&legend=top-left)
