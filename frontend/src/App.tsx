@@ -67,7 +67,14 @@ function App() {
       </Content>
 
       <Footer className="app-footer">
-        摄像头心率检测器 © 2025 
+        摄像头心率检测器 © 2025 | Writer：John Zheng |{' '}
+        <a
+          href="https://github.com/pluckypioneer/Heart-Rate-Online"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Github repo
+        </a>
       </Footer>
     </Layout>
   );

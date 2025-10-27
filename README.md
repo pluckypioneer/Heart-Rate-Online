@@ -23,6 +23,7 @@
 ### 📋 环境要求
 
 #### 方式一（本地开发）
+
 - Windows 10/11
 - Python 3.8+
 - Node.js 18+
@@ -30,9 +31,11 @@
 - 摄像头
 
 #### 方式二（Docker）
+
 - Windows 10/11
 - Docker Desktop
 - WSL 2（推荐）
+
 ---
 
 **推荐使用方式**: Windows 本地开发（方式一）以获得完整功能！
@@ -40,10 +43,12 @@
 ### 首次使用建议
 
 1. **安装 Python 和 Node.js**
+
    - Python: https://www.python.org/downloads/
    - Node.js: https://nodejs.org/
 
 2. **克隆项目**
+   
    ```bash
    git clone <repository-url>
    cd webcam-pulse-detector
@@ -69,7 +74,7 @@
    npm run dev
    ```
 
- 2. 仅想测试 UI → 使用方式二（Docker）
+    2. 仅想测试 UI → 使用方式二（Docker）
 
 ---
 
@@ -428,9 +433,11 @@ Apache License 2.0 - 详见 [LICENSE.txt](LICENSE.txt)
 
 ## 🙏 致谢
 
-- 原始算法来源
+- 工作原理论文:`http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434）`
+- 原始算法来源:[webcam-pulse-detector](https://github.com/thearn/webcam-pulse-detector)
 - OpenCV 社区
-- FastAPI 和 React 社区
+- FastAPI
+- React 社区
 
 ---
 
@@ -446,3 +453,6 @@ Apache License 2.0 - 详见 [LICENSE.txt](LICENSE.txt)
 - **API 文档**: http://localhost:8000/api/docs
 - **项目文档**: [docs/](docs/)
 
+## ⭐Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=pluckypioneer/Heart-Rate-Online&type=date&legend=top-left)](https://www.star-history.com/#pluckypioneer/Heart-Rate-Online&type=date&legend=top-left)
